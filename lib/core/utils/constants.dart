@@ -24,7 +24,5 @@ class AppStrings {
   static const String pickFromGallery = 'Galeriden Seç';
   static const String takePhoto = 'Fotoğraf Çek';
   static const String photoMode = 'Fotoğraf Modu';
-  static const String mirrorMode = 'Ayna Modu';
-  static const String howToTry = 'Nasıl denemek istersin?';
   static const String addNew = 'Yeni Ekle';
 }

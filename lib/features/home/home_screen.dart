@@ -167,7 +167,7 @@ class HomeScreen extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         ref.read(selectedHijabProvider.notifier).state = hijab;
-        _showModeSelection(context);
+        Navigator.pushNamed(context, AppRouter.photoMode);
       },
       child: Container(
         width: 100,
@@ -255,7 +255,7 @@ class HomeScreen extends ConsumerWidget {
     final hijab = await ref.read(recentHijabsProvider.notifier).pickFromGallery();
     if (hijab != null && context.mounted) {
       ref.read(selectedHijabProvider.notifier).state = hijab;
-      _showModeSelection(context);
+      Navigator.pushNamed(context, AppRouter.photoMode);
     }
   }
 
@@ -263,128 +263,8 @@ class HomeScreen extends ConsumerWidget {
     final hijab = await ref.read(recentHijabsProvider.notifier).pickFromCamera();
     if (hijab != null && context.mounted) {
       ref.read(selectedHijabProvider.notifier).state = hijab;
-      _showModeSelection(context);
+      Navigator.pushNamed(context, AppRouter.photoMode);
     }
   }
 
-  void _showModeSelection(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (ctx) => const _ModeSelectionSheet(),
-    );
-  }
-}
-
-class _ModeSelectionSheet extends StatelessWidget {
-  const _ModeSelectionSheet();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: AppColors.divider,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            AppStrings.howToTry,
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Expanded(
-                child: _ModeCard(
-                  icon: Icons.photo_camera_outlined,
-                  label: AppStrings.photoMode,
-                  gradient: const [AppColors.primary, Color(0xFFD4A0BB)],
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, AppRouter.photoMode);
-                  },
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _ModeCard(
-                  icon: Icons.flip_outlined,
-                  label: AppStrings.mirrorMode,
-                  gradient: const [AppColors.secondary, Color(0xFFB896D0)],
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, AppRouter.mirrorMode);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ModeCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final List<Color> gradient;
-  final VoidCallback onTap;
-
-  const _ModeCard({
-    required this.icon,
-    required this.label,
-    required this.gradient,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 28),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: gradient,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: gradient[0].withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 40, color: Colors.white),
-            const SizedBox(height: 12),
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

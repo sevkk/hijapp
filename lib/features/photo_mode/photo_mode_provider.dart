@@ -2,8 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../core/services/mediapipe_service.dart';
-import '../../core/services/texture_overlay_service.dart';
+import '../../core/services/replicate_service.dart';
 import '../../core/utils/constants.dart';
 import '../home/home_provider.dart';
 
@@ -58,8 +57,8 @@ class PhotoModeNotifier extends StateNotifier<AsyncValue<Uint8List?>> {
     return count < AppLimits.freeMaxDailyProcessing;
   }
 
-  /// MediaPipe segmentasyon + lokal texture overlay pipeline'ını çalıştırır.
-  /// Tümü cihaz üzerinde, API yok.
+  /// prunaai/p-image-edit ile hijab try-on.
+  /// Tek API çağrısı — kullanıcı fotoğrafı + ürün deseni → sonuç.
   Future<Uint8List?> processPhoto() async {
     final userPhoto = _ref.read(selectedUserPhotoProvider);
     final selectedHijab = _ref.read(selectedHijabProvider);
@@ -72,13 +71,11 @@ class PhotoModeNotifier extends StateNotifier<AsyncValue<Uint8List?>> {
     _ref.read(isProcessingProvider.notifier).state = true;
 
     try {
-      final textureService = _ref.read(textureOverlayServiceProvider);
-      final mediaPipeService = _ref.read(mediaPipeServiceProvider);
+      final replicateService = _ref.read(replicateServiceProvider);
 
-      final result = await textureService.processPhotoMode(
-        userPhoto: userPhoto,
-        hijabProduct: hijabFile,
-        mediaPipeService: mediaPipeService,
+      final result = await replicateService.processHijabTryOn(
+        userPhoto,
+        hijabFile,
       );
 
       // Günlük sayacı artır

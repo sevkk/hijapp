@@ -109,7 +109,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
       ('Sınırsız günlük fotoğraf işlemi', 'Ücretsiz: 5/gün'),
       ('Sınırsız son kullanılan başörtüsü', 'Ücretsiz: 3'),
       ('Sınırsız taslak fotoğraf', 'Ücretsiz: 3'),
-      ('Ayna modunda video kayıt', ''),
+      ('Yüksek çözünürlüklü sonuçlar', ''),
       ('Reklamsız deneyim', ''),
       ('Öncelikli destek', ''),
     ];
