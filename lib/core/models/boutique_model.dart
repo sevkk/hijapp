@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Spec v2 Bolum 3.4: BoutiqueModel'e totalTryOns, last30DaysTryOns,
+/// productCategories, plan ve opsiyonel customDomain eklendi.
 class BoutiqueModel {
   final String id;
   final String name;
@@ -11,6 +13,11 @@ class BoutiqueModel {
   final int creditBalance;
   final int totalCreditsPurchased;
   final int totalCreditsDistributed;
+  final int totalTryOns;
+  final int last30DaysTryOns;
+  final List<String> productCategories;
+  final String plan; // 'starter' | 'pro' | 'enterprise'
+  final String? customDomain;
   final bool isActive;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -26,6 +33,11 @@ class BoutiqueModel {
     this.creditBalance = 0,
     this.totalCreditsPurchased = 0,
     this.totalCreditsDistributed = 0,
+    this.totalTryOns = 0,
+    this.last30DaysTryOns = 0,
+    this.productCategories = const [],
+    this.plan = 'starter',
+    this.customDomain,
     this.isActive = true,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -42,9 +54,14 @@ class BoutiqueModel {
       logoUrl: data['logoUrl'] as String?,
       instagramHandle: data['instagramHandle'] as String?,
       websiteUrl: data['websiteUrl'] as String?,
-      creditBalance: data['creditBalance'] as int? ?? 0,
-      totalCreditsPurchased: data['totalCreditsPurchased'] as int? ?? 0,
-      totalCreditsDistributed: data['totalCreditsDistributed'] as int? ?? 0,
+      creditBalance: (data['creditBalance'] as num?)?.toInt() ?? 0,
+      totalCreditsPurchased: (data['totalCreditsPurchased'] as num?)?.toInt() ?? 0,
+      totalCreditsDistributed: (data['totalCreditsDistributed'] as num?)?.toInt() ?? 0,
+      totalTryOns: (data['totalTryOns'] as num?)?.toInt() ?? 0,
+      last30DaysTryOns: (data['last30DaysTryOns'] as num?)?.toInt() ?? 0,
+      productCategories: List<String>.from(data['productCategories'] as List? ?? const []),
+      plan: data['plan'] as String? ?? 'starter',
+      customDomain: data['customDomain'] as String?,
       isActive: data['isActive'] as bool? ?? true,
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -61,6 +78,11 @@ class BoutiqueModel {
         'creditBalance': creditBalance,
         'totalCreditsPurchased': totalCreditsPurchased,
         'totalCreditsDistributed': totalCreditsDistributed,
+        'totalTryOns': totalTryOns,
+        'last30DaysTryOns': last30DaysTryOns,
+        'productCategories': productCategories,
+        'plan': plan,
+        'customDomain': customDomain,
         'isActive': isActive,
         'createdAt': Timestamp.fromDate(createdAt),
         'updatedAt': Timestamp.fromDate(updatedAt),

@@ -4,6 +4,7 @@ import '../models/user_model.dart';
 import '../models/boutique_model.dart';
 import '../models/boutique_product_model.dart';
 import '../models/referral_code_model.dart';
+import '../models/try_on_event_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -275,6 +276,124 @@ class FirestoreService {
         .orderBy('sortOrder')
         .get();
     return query.docs.map(BoutiqueProductModel.fromFirestore).toList();
+  }
+
+  /// Butigin belirli bir kategorideki urunleri (Spec v2 Bolum 3 — kategori filtresi)
+  Future<List<BoutiqueProductModel>> getProductsByCategory(
+    String boutiqueId,
+    String category, {
+    int limit = 100,
+  }) async {
+    final query = await _firestore
+        .collection('boutique_products')
+        .where('boutiqueId', isEqualTo: boutiqueId)
+        .where('category', isEqualTo: category)
+        .where('isActive', isEqualTo: true)
+        .orderBy('sortOrder')
+        .limit(limit)
+        .get();
+    return query.docs.map(BoutiqueProductModel.fromFirestore).toList();
+  }
+
+  /// En cok denenen N urun (dashboard'da kullanilir)
+  Future<List<BoutiqueProductModel>> getTopProducts(
+    String boutiqueId, {
+    int limit = 10,
+    bool last30Days = false,
+  }) async {
+    final field = last30Days ? 'last30DaysCount' : 'tryOnCount';
+    final query = await _firestore
+        .collection('boutique_products')
+        .where('boutiqueId', isEqualTo: boutiqueId)
+        .where('isActive', isEqualTo: true)
+        .orderBy(field, descending: true)
+        .limit(limit)
+        .get();
+    return query.docs.map(BoutiqueProductModel.fromFirestore).toList();
+  }
+
+  // ───────── TRY-ON EVENT LOG ─────────
+
+  /// Spec v2 Bolum 3.2: Bir try-on event'i logla ve ilgili counter'lari arttir.
+  ///
+  /// Tek transaction'da:
+  ///   1. try_on_events/{eventId} yeni dokuman
+  ///   2. boutique_products/{productId}.tryOnCount += 1
+  ///   3. boutiques/{boutiqueId}.totalTryOns += 1
+  ///   4. (varsa) referral_codes/{codeId} icin son kullanim zamani
+  Future<String> logTryOnEvent({
+    required String boutiqueId,
+    required String productId,
+    String? userId,
+    TryOnUserType userType = TryOnUserType.free,
+    String? referralCodeId,
+    String replicateModel = 'prunaai/p-image-edit',
+    bool succeeded = true,
+    double costUsd = 0.0,
+    String? errorMessage,
+  }) async {
+    final eventRef = _firestore.collection('try_on_events').doc();
+
+    await _firestore.runTransaction((transaction) async {
+      transaction.set(eventRef, {
+        'boutiqueId': boutiqueId,
+        'productId': productId,
+        'userId': userId,
+        'userType': userType.wire,
+        'referralCodeId': referralCodeId,
+        'timestamp': FieldValue.serverTimestamp(),
+        'replicateModel': replicateModel,
+        'succeeded': succeeded,
+        'costUsd': costUsd,
+        if (errorMessage != null) 'errorMessage': errorMessage,
+      });
+
+      // Sadece basarili event'ler counter'lari arttirir.
+      if (succeeded) {
+        if (productId.isNotEmpty) {
+          transaction.update(
+            _firestore.collection('boutique_products').doc(productId),
+            {
+              'tryOnCount': FieldValue.increment(1),
+              'updatedAt': FieldValue.serverTimestamp(),
+            },
+          );
+        }
+        if (boutiqueId.isNotEmpty) {
+          transaction.update(
+            _firestore.collection('boutiques').doc(boutiqueId),
+            {
+              'totalTryOns': FieldValue.increment(1),
+              'updatedAt': FieldValue.serverTimestamp(),
+            },
+          );
+        }
+      }
+    });
+
+    return eventRef.id;
+  }
+
+  /// Belirli bir tarih araliginda butigin event'lerini getir.
+  ///
+  /// `boutiqueId + timestamp DESC` indexi gerekir.
+  Future<List<TryOnEventModel>> getBoutiqueAnalytics(
+    String boutiqueId, {
+    DateTime? from,
+    DateTime? to,
+    int limit = 500,
+  }) async {
+    Query<Map<String, dynamic>> q = _firestore
+        .collection('try_on_events')
+        .where('boutiqueId', isEqualTo: boutiqueId);
+    if (from != null) {
+      q = q.where('timestamp', isGreaterThanOrEqualTo: Timestamp.fromDate(from));
+    }
+    if (to != null) {
+      q = q.where('timestamp', isLessThanOrEqualTo: Timestamp.fromDate(to));
+    }
+    final snap = await q.orderBy('timestamp', descending: true).limit(limit).get();
+    return snap.docs.map(TryOnEventModel.fromFirestore).toList();
   }
 }
 
