@@ -11,8 +11,10 @@
 |-------|-------|
 | Outbound link | **Var ama göze batmaz** — ürün detayında küçük "Butik sitesini ziyaret et ↗" linki, ana CTA değil |
 | Butik onboarding | **Onaylı** — Şevk manuel onaylar, self-serve değil. UI'da sadece "Butik ortağı olmak için iletişim" linki |
-| Tüketici paket | **10 deneme = ₺49** (başlangıç). 50 deneme = ₺169 (en popüler, mockup'a uygun) |
-| Butik kredi birim | **Hedef ₺1.00/kredi** — 100 paket ₺99, 500 paket ₺449, 2000 paket ₺1699, 10000 paket ₺7999 (hacim indirimleri uygulanmış) |
+| Tüketici paket | **10 deneme = ₺49** (başlangıç). 50 deneme = ₺169 (en popüler) |
+| Butik fiyatlandırması (revize edildi) | **Starter 50 kr ₺599, Growth 100 kr ₺1.000, Pro 500 kr ₺4.490, Premium 2000 kr ₺16.990, Enterprise 10000 kr ₺79.990.** Detay Bölüm 6.6'da |
+| Tüketici-butik fiyat çelişkisi | **Bilinçli kabul edildi** — butik müşteriye kodu bedava verir, çelişki müşteri gözünde sorun değil. Butik kanalı pazarlama, fiyat duyarlılığı tüketiciden farklı |
+| Hedef butik segmenti | **Karma** — küçük (Starter)/orta (Growth)/büyük (Pro+) butikler hepsi kapsamda |
 
 ---
 
@@ -351,13 +353,18 @@ Flutter Web için: `fl_chart` paketi kullan.
 ### 6.6 Kredi Satın Alma (`/billing`)
 
 - Mevcut bakiye + bu ayın tüketimi büyük rakamla
-- Paket kartları (hedef birim fiyat ₺1.00/kredi, hacim indirimi var):
-  - **100 kredi → ₺99** (₺0.99/kredi)
-  - **500 kredi → ₺449** (₺0.90/kredi — %10 indirim)
-  - **2000 kredi → ₺1.699** (₺0.85/kredi — %15 indirim, en popüler)
-  - **10000 kredi → ₺7.999** (₺0.80/kredi — %20 indirim, enterprise)
+- Paket kartları (5 kademeli, segment-bazlı):
+  - **Starter — 50 kredi → ₺599** (₺11.98/kredi) — küçük butik, ilk deneme
+  - **Growth — 100 kredi → ₺1.000** (₺10.00/kredi) — orta butik, ana giriş paketi
+  - **Pro — 500 kredi → ₺4.490** (₺8.98/kredi, %10 indirim) — büyüyen butik
+  - **Premium — 2000 kredi → ₺16.990** (₺8.49/kredi, %15 indirim) — markalaşmış butik, **en popüler**
+  - **Enterprise — 10000 kredi → ₺79.990** (₺8.00/kredi, %20 indirim) — Modanisa/Armine ölçeği
+- Her paket kartında "X TL/kredi" + "%Y indirim" rozeti
+- Premium kartında "En popüler" altın rozet (mockup'taki gibi)
+- Enterprise için "Bize ulaşın" alternatifi (Şevk manuel müzakere için)
 - Ödeme: iyzico (TR butikleri için kritik), Stripe (uluslararası ihtiyacında)
 - Geçmiş satın alma faturaları tablosu (PDF indir)
+- KDV ayrı satırda gösterilsin (B2B faturada şart)
 
 ### 6.7 Ayarlar (`/settings`)
 

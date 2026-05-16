@@ -61,12 +61,13 @@ class CreditPackages {
     {'credits': 100, 'price': 299.0, 'label': '100 Deneme', 'id': 'credits_100'},
   ];
 
-  // Butik kredi paketleri — hedef ~1 TL/kredi (Spec v2 Bolum 0).
+  // Butik kredi paketleri — 5 kademeli segment-bazli (Spec v2 Bolum 0 / 6.6 revize).
   static const List<Map<String, dynamic>> b2b = [
-    {'credits': 100, 'price': 99.0, 'label': '100 Kredi', 'id': 'boutique_100'},
-    {'credits': 500, 'price': 449.0, 'label': '500 Kredi', 'id': 'boutique_500'},
-    {'credits': 2000, 'price': 1699.0, 'label': '2000 Kredi', 'id': 'boutique_2000'},
-    {'credits': 10000, 'price': 7999.0, 'label': '10000 Kredi', 'id': 'boutique_10000'},
+    {'credits': 50, 'price': 599.0, 'label': 'Starter', 'id': 'boutique_starter', 'tagline': 'Kucuk butik, ilk deneme'},
+    {'credits': 100, 'price': 1000.0, 'label': 'Growth', 'id': 'boutique_growth', 'tagline': 'Ana giris paketi'},
+    {'credits': 500, 'price': 4490.0, 'label': 'Pro', 'id': 'boutique_pro', 'tagline': 'Buyuyen butik (-%10)', 'discountPct': 10},
+    {'credits': 2000, 'price': 16990.0, 'label': 'Premium', 'id': 'boutique_premium', 'popular': true, 'tagline': 'Markalasmis butik (-%15)', 'discountPct': 15},
+    {'credits': 10000, 'price': 79990.0, 'label': 'Enterprise', 'id': 'boutique_enterprise', 'tagline': 'Modanisa olceginde (-%20)', 'discountPct': 20, 'contactSales': true},
   ];
 }
 

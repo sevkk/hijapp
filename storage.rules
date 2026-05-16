@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Kullanici upload klasoru — sadece sahibi yazar.
+    match /users/{uid}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Butik urun gorselleri — butik admin yazar (custom claim), public read.
+    match /boutiques/{boutiqueId}/products/{file=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && (request.auth.token.boutiqueId == boutiqueId
+            || request.auth.token.admin == true)
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Generated AI try-on outputs — sahibi tarafindan kaydedilir.
+    match /tryons/{uid}/{file=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid
+        && request.resource.size < 10 * 1024 * 1024;
+    }
+  }
+}

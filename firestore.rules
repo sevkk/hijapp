@@ -1,0 +1,107 @@
+rules_version = '2';
+
+// Spec v2 Bolum 4 — Firestore Security Rules.
+// Butik admin yetkilendirmesi: custom claim `boutiqueId == <id>` veya
+// `admin == true` (Sevk icin). User documanlari sahibine baglidir.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+    function isBoutiqueAdmin(boutiqueId) {
+      return isSignedIn() && (
+        request.auth.token.boutiqueId == boutiqueId || isAdmin()
+      );
+    }
+
+    // ---- users ----
+    match /users/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if isSignedIn() && request.auth.uid == uid;
+      // Sahibi kendi dokumanini guncelleyebilir, fakat `credits` alanini sadece
+      // Cloud Function (admin SDK) yazabilir.
+      allow update: if isSignedIn() && request.auth.uid == uid
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['credits']);
+      allow delete: if false;
+    }
+
+    // ---- boutiques ----
+    match /boutiques/{boutiqueId} {
+      allow read: if isSignedIn();
+      allow write: if isBoutiqueAdmin(boutiqueId);
+    }
+
+    // boutiques/{id}/credit_reservations (Cloud Function idempotency)
+    match /boutiques/{boutiqueId}/credit_reservations/{txId} {
+      allow read: if isBoutiqueAdmin(boutiqueId);
+      allow write: if false; // sadece admin SDK
+    }
+
+    // ---- boutique_products (kok koleksiyon) ----
+    match /boutique_products/{productId} {
+      allow read: if true; // public vitrin
+      allow create, update: if isSignedIn()
+        && isBoutiqueAdmin(request.resource.data.boutiqueId);
+      allow delete: if isSignedIn() && isBoutiqueAdmin(resource.data.boutiqueId);
+    }
+
+    // ---- referral_codes ----
+    match /referral_codes/{codeId} {
+      // Kod gecerliligini sorgulamak icin public read sart.
+      allow read: if true;
+      allow create, update: if isSignedIn()
+        && isBoutiqueAdmin(request.resource.data.boutiqueId);
+      allow delete: if isSignedIn() && isBoutiqueAdmin(resource.data.boutiqueId);
+    }
+
+    // ---- try_on_events ----
+    match /try_on_events/{eventId} {
+      // Sahibi (varsa) ve butik admini okuyabilir.
+      allow read: if isSignedIn() && (
+        (resource.data.userId == request.auth.uid)
+        || isBoutiqueAdmin(resource.data.boutiqueId)
+        || isAdmin()
+      );
+      // Yazma: kullanici sadece kendi userId ile yazabilir (anonim icinse client
+      // yaziamaz — Cloud Function uzerinden).
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // ---- transactions ----
+    match /transactions/{txId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid
+        || (resource.data.boutiqueId is string
+            && isBoutiqueAdmin(resource.data.boutiqueId))
+        || isAdmin()
+      );
+      // Client transaction yazabilir (mobil tarafi yaziyor) — fakat sadece
+      // kendi userId ile.
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // ---- user_boutique_credits ----
+    match /user_boutique_credits/{docId} {
+      allow read, write: if isSignedIn()
+        && (resource == null
+            ? request.resource.data.userId == request.auth.uid
+            : resource.data.userId == request.auth.uid);
+    }
+
+    // ---- boutique_weekly_reports (Cloud Function yazar) ----
+    match /boutique_weekly_reports/{docId} {
+      allow read: if isAdmin() || (
+        isSignedIn() && isBoutiqueAdmin(resource.data.boutiqueId)
+      );
+      allow write: if false;
+    }
+  }
+}
