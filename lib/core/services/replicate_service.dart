@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class ReplicateException implements Exception {
   final String message;
@@ -16,10 +20,12 @@ class ReplicateException implements Exception {
 }
 
 class ReplicateService {
-  // API key'i --dart-define ile ver:
   // flutter run --dart-define=REPLICATE_API_KEY=r8_xxx
+  // flutter run --dart-define=REPLICATE_API_KEY=r8_xxx --dart-define=MOCK_MODE=true
   static const String _apiKey =
       String.fromEnvironment('REPLICATE_API_KEY', defaultValue: '');
+  static const bool _mockMode =
+      bool.fromEnvironment('MOCK_MODE', defaultValue: false);
   static const String _baseUrl = 'https://api.replicate.com/v1';
   static const Duration _pollInterval = Duration(seconds: 2);
   static const Duration _maxWait = Duration(seconds: 90);
@@ -32,10 +38,156 @@ class ReplicateService {
           'Content-Type': 'application/json',
         };
 
+  /// Mock mode aktif mi?
+  bool get isMockMode => _mockMode;
+
   /// prunaai/p-image-edit ile hijab try-on.
-  /// Kullanıcı fotoğrafı + ürün deseni alır, sonuç görseli döner.
-  /// Tek API çağrısı — segmentasyon gerekmez.
+  /// Önce cache kontrol eder. Cache varsa API çağrısı yapmaz.
+  /// Mock mode'da her zaman lokal overlay döner.
   Future<Uint8List> processHijabTryOn(
+    File userPhoto,
+    File hijabProduct,
+  ) async {
+    if (_mockMode) {
+      return _mockProcessing(userPhoto, hijabProduct);
+    }
+
+    // Cache kontrol
+    final cacheKey = await _generateCacheKey(userPhoto, hijabProduct);
+    final cached = await _getFromCache(cacheKey);
+    if (cached != null) {
+      debugPrint('HIJAPP CACHE: Sonuç cache\'ten döndürüldü (API çağrısı yok)');
+      return cached;
+    }
+
+    final result = await _apiProcessing(userPhoto, hijabProduct);
+
+    // Sonucu cache'e kaydet
+    await _saveToCache(cacheKey, result);
+    debugPrint('HIJAPP CACHE: Sonuç cache\'e kaydedildi');
+
+    return result;
+  }
+
+  /// İki görselin hash'inden benzersiz cache key oluşturur.
+  Future<String> _generateCacheKey(File file1, File file2) async {
+    final bytes1 = await file1.readAsBytes();
+    final bytes2 = await file2.readAsBytes();
+    final combined = md5.convert([...bytes1, ...bytes2]);
+    return combined.toString();
+  }
+
+  /// Cache'ten sonuç döndürür. Yoksa null.
+  Future<Uint8List?> _getFromCache(String key) async {
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final cacheFile = File('${dir.path}/hijapp_cache/$key.png');
+      if (await cacheFile.exists()) {
+        return cacheFile.readAsBytes();
+      }
+    } catch (e) {
+      debugPrint('HIJAPP CACHE: Okuma hatası: $e');
+    }
+    return null;
+  }
+
+  /// Sonucu cache'e kaydeder.
+  Future<void> _saveToCache(String key, Uint8List data) async {
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final cacheDir = Directory('${dir.path}/hijapp_cache');
+      if (!await cacheDir.exists()) {
+        await cacheDir.create(recursive: true);
+      }
+      final cacheFile = File('${cacheDir.path}/$key.png');
+      await cacheFile.writeAsBytes(data);
+    } catch (e) {
+      debugPrint('HIJAPP CACHE: Kaydetme hatası: $e');
+    }
+  }
+
+  /// MOCK: Basit Canvas overlay — API çağrısı yok, $0 maliyet.
+  /// Hijab desenini yarı şeffaf olarak fotoğrafın üst bölgesine yerleştirir.
+  Future<Uint8List> _mockProcessing(
+    File userPhoto,
+    File hijabProduct,
+  ) async {
+    debugPrint('HIJAPP MOCK: Mock mode aktif, API çağrısı yapılmıyor');
+
+    final userBytes = await userPhoto.readAsBytes();
+    final productBytes = await hijabProduct.readAsBytes();
+
+    final userImage = await _decodeImage(userBytes);
+    final productImage = await _decodeImage(productBytes);
+
+    final w = userImage.width;
+    final h = userImage.height;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+
+    // Kullanıcı fotoğrafını çiz
+    canvas.drawImage(userImage, Offset.zero, Paint());
+
+    // Hijab desenini yarı şeffaf olarak üst bölgeye yerleştir
+    final hijabArea = Rect.fromLTWH(
+      0,
+      0,
+      w.toDouble(),
+      h * 0.5, // üst yarı
+    );
+
+    canvas.saveLayer(hijabArea, Paint());
+    canvas.drawImageRect(
+      productImage,
+      Rect.fromLTWH(
+        0, 0,
+        productImage.width.toDouble(),
+        productImage.height.toDouble(),
+      ),
+      hijabArea,
+      Paint()..filterQuality = FilterQuality.high,
+    );
+    // Yarı şeffaf yap
+    canvas.drawRect(
+      hijabArea,
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.5)
+        ..blendMode = BlendMode.dstIn,
+    );
+    canvas.restore();
+
+    // "MOCK" watermark ekle
+    final textPainter = TextPainter(
+      text: const TextSpan(
+        text: 'MOCK MODE',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(w / 2 - textPainter.width / 2, h - 60),
+    );
+
+    final picture = recorder.endRecording();
+    final image = await picture.toImage(w, h);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+    // Gerçekçi gecikme simülasyonu
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    debugPrint('HIJAPP MOCK: Mock sonuç oluşturuldu');
+    return byteData!.buffer.asUint8List();
+  }
+
+  /// GERÇEK API: prunaai/p-image-edit çağrısı, $0.01/işlem.
+  Future<Uint8List> _apiProcessing(
     File userPhoto,
     File hijabProduct,
   ) async {
@@ -46,7 +198,7 @@ class ReplicateService {
       final userUri = 'data:image/jpeg;base64,$userBase64';
       final productUri = 'data:image/jpeg;base64,$productBase64';
 
-      debugPrint('HIJAPP DEBUG: p-image-edit başlıyor...');
+      debugPrint('HIJAPP API: p-image-edit başlıyor...');
 
       final prediction = await _createPrediction(
         version:
@@ -63,7 +215,7 @@ class ReplicateService {
       );
 
       final predictionId = prediction['id'] as String;
-      debugPrint('HIJAPP DEBUG: prediction created: $predictionId');
+      debugPrint('HIJAPP API: prediction created: $predictionId');
 
       final result = await _pollPrediction(predictionId);
       final output = result['output'];
@@ -72,13 +224,18 @@ class ReplicateService {
         throw ReplicateException('İşlem sonucu boş döndü');
       }
 
-      debugPrint(
-          'HIJAPP DEBUG: output type: ${output.runtimeType}');
+      debugPrint('HIJAPP API: output type: ${output.runtimeType}');
       return await _downloadOutput(output);
     } catch (e) {
       if (e is ReplicateException) rethrow;
       throw ReplicateException('İşlem hatası: $e');
     }
+  }
+
+  Future<ui.Image> _decodeImage(Uint8List bytes) async {
+    final codec = await ui.instantiateImageCodec(bytes);
+    final frame = await codec.getNextFrame();
+    return frame.image;
   }
 
   Future<Map<String, dynamic>> _createPrediction({
@@ -104,7 +261,7 @@ class ReplicateService {
             jsonDecode(response.body) as Map<String, dynamic>;
         final retryAfter = responseBody['retry_after'] as int? ?? 5;
         debugPrint(
-            'HIJAPP DEBUG: rate limited, ${retryAfter}sn bekleniyor... (deneme ${attempt + 1}/3)');
+            'HIJAPP API: rate limited, ${retryAfter}sn bekleniyor... (deneme ${attempt + 1}/3)');
         await Future.delayed(Duration(seconds: retryAfter + 1));
         continue;
       }
@@ -131,7 +288,7 @@ class ReplicateService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final status = data['status'] as String;
 
-      debugPrint('HIJAPP DEBUG: poll status: $status');
+      debugPrint('HIJAPP API: poll status: $status');
 
       switch (status) {
         case 'succeeded':
@@ -174,7 +331,7 @@ class ReplicateService {
       throw ReplicateException('Beklenmeyen output formatı: $output');
     }
 
-    debugPrint('HIJAPP DEBUG: downloading from: $url');
+    debugPrint('HIJAPP API: downloading from: $url');
 
     final response = await http.get(Uri.parse(url));
 
@@ -184,7 +341,7 @@ class ReplicateService {
     }
 
     debugPrint(
-        'HIJAPP DEBUG: downloaded ${response.bodyBytes.length} bytes');
+        'HIJAPP API: downloaded ${response.bodyBytes.length} bytes');
     return response.bodyBytes;
   }
 }

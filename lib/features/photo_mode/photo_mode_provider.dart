@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../core/services/firestore_service.dart';
 import '../../core/services/replicate_service.dart';
-import '../../core/utils/constants.dart';
 import '../home/home_provider.dart';
 
 final selectedUserPhotoProvider = StateProvider<File?>((ref) => null);
@@ -49,21 +50,24 @@ class PhotoModeNotifier extends StateNotifier<AsyncValue<Uint8List?>> {
     }
   }
 
-  /// Günlük limit kontrolü yapar.
-  /// true: işlem yapılabilir, false: limit dolmuş
-  bool canProcess() {
-    final storage = _ref.read(storageServiceProvider);
-    final count = storage.getDailyProcessingCount();
-    return count < AppLimits.freeMaxDailyProcessing;
+  /// Kredi kontrolü — Firestore'dan kullanıcının kredisi var mı diye bakar
+  Future<bool> canProcess() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return false;
+    final firestoreService = _ref.read(firestoreServiceProvider);
+    final user = await firestoreService.getUser(uid);
+    return user != null && user.canProcess;
   }
 
   /// prunaai/p-image-edit ile hijab try-on.
   /// Tek API çağrısı — kullanıcı fotoğrafı + ürün deseni → sonuç.
+  /// 1 kredi düşer (Firestore transaction).
   Future<Uint8List?> processPhoto() async {
     final userPhoto = _ref.read(selectedUserPhotoProvider);
     final selectedHijab = _ref.read(selectedHijabProvider);
+    final uid = FirebaseAuth.instance.currentUser?.uid;
 
-    if (userPhoto == null || selectedHijab == null) return null;
+    if (userPhoto == null || selectedHijab == null || uid == null) return null;
 
     final hijabFile = File(selectedHijab.path);
 
@@ -71,16 +75,19 @@ class PhotoModeNotifier extends StateNotifier<AsyncValue<Uint8List?>> {
     _ref.read(isProcessingProvider.notifier).state = true;
 
     try {
+      // Önce kredi düş (atomik transaction)
+      final firestoreService = _ref.read(firestoreServiceProvider);
+      final success = await firestoreService.useCredit(uid);
+      if (!success) {
+        throw Exception('Yeterli krediniz yok. Lütfen kredi satın alın.');
+      }
+
       final replicateService = _ref.read(replicateServiceProvider);
 
       final result = await replicateService.processHijabTryOn(
         userPhoto,
         hijabFile,
       );
-
-      // Günlük sayacı artır
-      final storage = _ref.read(storageServiceProvider);
-      await storage.incrementDailyCount();
 
       _ref.read(resultImageProvider.notifier).state = result;
       state = AsyncValue.data(result);

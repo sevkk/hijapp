@@ -3,12 +3,9 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/hijab_image.dart';
 import '../models/user_template.dart';
-import '../utils/constants.dart';
 
 class StorageService {
   static const _recentHijabsKey = 'recent_hijabs';
-  static const _dailyCountKey = 'daily_processing_count';
-  static const _lastDateKey = 'last_processing_date';
   static const _templatesKey = 'user_templates';
 
   final SharedPreferences _prefs;
@@ -23,7 +20,7 @@ class StorageService {
         .toList();
   }
 
-  Future<void> addRecentHijab(HijabImage hijab, {int maxCount = 3}) async {
+  Future<void> addRecentHijab(HijabImage hijab, {int maxCount = 10}) async {
     final current = getRecentHijabs();
     current.removeWhere((h) => h.path == hijab.path);
     current.insert(0, hijab);
@@ -45,41 +42,20 @@ class StorageService {
     );
   }
 
-  int getDailyProcessingCount() {
-    final lastDate = _prefs.getString(_lastDateKey);
-    final today = DateTime.now().toIso8601String().substring(0, 10);
-    if (lastDate != today) return 0;
-    return _prefs.getInt(_dailyCountKey) ?? 0;
-  }
-
-  Future<void> incrementDailyCount() async {
-    final today = DateTime.now().toIso8601String().substring(0, 10);
-    final lastDate = _prefs.getString(_lastDateKey);
-    int count = 0;
-    if (lastDate == today) {
-      count = _prefs.getInt(_dailyCountKey) ?? 0;
-    }
-    await _prefs.setInt(_dailyCountKey, count + 1);
-    await _prefs.setString(_lastDateKey, today);
-  }
-
   // --- Template CRUD ---
 
   List<UserTemplate> getTemplates() {
     final data = _prefs.getStringList(_templatesKey);
     if (data == null) return [];
     return data
-        .map((e) =>
-            UserTemplate.fromJson(jsonDecode(e) as Map<String, dynamic>))
+        .map((e) => UserTemplate.fromJson(jsonDecode(e) as Map<String, dynamic>))
         .toList();
   }
 
-  Future<void> addTemplate(UserTemplate template,
-      {int maxCount = AppLimits.freeMaxTemplates}) async {
+  Future<void> addTemplate(UserTemplate template, {int maxCount = 20}) async {
     final current = getTemplates();
     if (current.length >= maxCount) {
-      throw Exception(
-          'Taslak limiti doldu ($maxCount). Premium ile sınırsız taslak ekleyebilirsin.');
+      current.removeLast();
     }
     current.insert(0, template);
     await _saveTemplates(current);
@@ -90,7 +66,6 @@ class StorageService {
     final index = current.indexWhere((t) => t.id == id);
     if (index != -1) {
       final template = current[index];
-      // Diskten sil
       final file = File(template.imagePath);
       if (await file.exists()) {
         await file.delete();
@@ -113,10 +88,6 @@ class StorageService {
       );
       await _saveTemplates(current);
     }
-  }
-
-  bool canAddTemplate() {
-    return getTemplates().length < AppLimits.freeMaxTemplates;
   }
 
   Future<void> _saveTemplates(List<UserTemplate> templates) async {

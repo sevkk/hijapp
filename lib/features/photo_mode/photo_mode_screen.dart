@@ -336,10 +336,11 @@ class PhotoModeScreen extends ConsumerWidget {
   Future<void> _onTryPressed(BuildContext context, WidgetRef ref) async {
     final notifier = ref.read(photoModeNotifierProvider.notifier);
 
-    // Günlük limit kontrolü
-    if (!notifier.canProcess()) {
+    // Kredi kontrolü
+    final hasCredits = await notifier.canProcess();
+    if (!hasCredits) {
       if (context.mounted) {
-        Navigator.pushNamed(context, AppRouter.premium);
+        Navigator.pushNamed(context, AppRouter.credits);
       }
       return;
     }

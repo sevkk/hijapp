@@ -164,7 +164,7 @@ class TemplatesScreen extends ConsumerWidget {
         child: Column(
           children: [
             Text(
-              '${templates.length}/${AppLimits.freeMaxTemplates} taslak kullanıldı',
+              '${templates.length} taslak kullanıldı',
               style: GoogleFonts.poppins(
                 fontSize: 13,
                 color: AppColors.textSecondary,
@@ -172,7 +172,7 @@ class TemplatesScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Premium ile sınırsız taslak ekle',
+              'Daha fazla kredi al, daha fazla dene',
               style: GoogleFonts.poppins(
                 fontSize: 12,
                 color: AppColors.secondary,
@@ -184,13 +184,13 @@ class TemplatesScreen extends ConsumerWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () =>
-                    Navigator.pushNamed(context, AppRouter.premium),
+                    Navigator.pushNamed(context, AppRouter.credits),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.secondary,
                   side: const BorderSide(color: AppColors.secondary),
                 ),
                 child: Text(
-                  "Premium'a Geç",
+                  'Kredi Satın Al',
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),

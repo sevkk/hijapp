@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/models/boutique_model.dart';
 import '../../core/models/hijab_image.dart';
+import '../../core/services/firestore_service.dart';
 import '../../core/services/storage_service.dart';
 import '../../core/utils/image_utils.dart';
 
@@ -20,6 +23,24 @@ final recentHijabsProvider =
 });
 
 final selectedHijabProvider = StateProvider<HijabImage?>((ref) => null);
+
+/// Kullanıcının bağlı olduğu butikleri getir
+final connectedBoutiquesProvider = FutureProvider<List<BoutiqueModel>>((ref) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return [];
+
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  final credits = await firestoreService.getUserAllBoutiqueCredits(user.uid);
+
+  final boutiques = <BoutiqueModel>[];
+  for (final credit in credits) {
+    final boutiqueId = credit['boutiqueId'] as String?;
+    if (boutiqueId == null) continue;
+    final boutique = await firestoreService.getBoutique(boutiqueId);
+    if (boutique != null) boutiques.add(boutique);
+  }
+  return boutiques;
+});
 
 class RecentHijabsNotifier extends StateNotifier<List<HijabImage>> {
   final StorageService _storage;

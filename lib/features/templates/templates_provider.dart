@@ -68,5 +68,5 @@ class TemplatesNotifier extends StateNotifier<List<UserTemplate>> {
     _load();
   }
 
-  bool get canAddMore => _storage.canAddTemplate();
+  bool get canAddMore => true; // Kredi bazlı sistem — limit yok
 }
