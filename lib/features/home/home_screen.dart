@@ -89,7 +89,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const SizedBox(width: 6),
                 Text(
                   '$credits Kredi',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -125,7 +125,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   const Icon(Icons.logout, size: 18, color: AppColors.textSecondary),
                   const SizedBox(width: 8),
-                  Text('Çıkış Yap', style: GoogleFonts.poppins(fontSize: 14)),
+                  Text('Çıkış Yap', style: GoogleFonts.inter(fontSize: 14)),
                 ],
               ),
             ),
@@ -144,7 +144,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ).createShader(bounds),
           child: Text(
             AppStrings.appName,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 36,
               fontWeight: FontWeight.w800,
               color: Colors.white,
@@ -155,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         const SizedBox(height: 4),
         Text(
           'Virtual Hijab Try-On',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 13,
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w400,
@@ -199,7 +199,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 16),
             Text(
               AppStrings.uploadHijab,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
@@ -209,7 +209,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 4),
             Text(
               'JPG, PNG',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 12,
                 color: AppColors.textSecondary,
               ),
@@ -226,7 +226,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       children: [
         Text(
           AppStrings.recentlyUsed,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
@@ -297,7 +297,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 4),
             Text(
               AppStrings.addNew,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 11,
                 color: AppColors.primary,
                 fontWeight: FontWeight.w500,
@@ -320,7 +320,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Text(
               'Butiklerim',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -385,7 +385,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 8),
             Text(
               boutique.name,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -500,7 +500,7 @@ class _QuickActionCard extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               label,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: color,

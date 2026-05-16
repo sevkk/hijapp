@@ -112,7 +112,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                 const SizedBox(height: 24),
                 Text(
                   boutiqueName,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -122,7 +122,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                 Text(
                   'Bu butiğin ürünlerini görebilmek için\nreferans kodu girmeniz gerekiyor.',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 14,
                     color: AppColors.textSecondary,
                     height: 1.5,
@@ -144,7 +144,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                       icon: const Icon(Icons.qr_code, color: Colors.white),
                       label: Text(
                         'Referans Kodu Gir',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -207,7 +207,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                     const SizedBox(height: 10),
                     Text(
                       boutiqueName,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -217,7 +217,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                       const SizedBox(height: 2),
                       Text(
                         '@$boutiqueInsta',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 13,
                           color: Colors.white.withOpacity(0.8),
                         ),
@@ -237,7 +237,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                           const SizedBox(width: 6),
                           Text(
                             '$_userCredits Kredi',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -262,7 +262,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                 children: [
                   Text(
                     'Ürünler',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -270,7 +270,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                   ),
                   Text(
                     '${_products.length} ürün',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 13,
                       color: AppColors.textSecondary,
                     ),
@@ -292,7 +292,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                           const SizedBox(height: 12),
                           Text(
                             'Henüz ürün eklenmemiş',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 15,
                               color: AppColors.textSecondary,
                             ),
@@ -354,7 +354,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                 children: [
                   Text(
                     boutiqueName,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -362,7 +362,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                   ),
                   Text(
                     '$_userCredits kredi kaldı',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       color: AppColors.textSecondary,
                     ),
@@ -380,7 +380,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                 ),
                 child: Text(
                   'Kredi Al',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -451,7 +451,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                     name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -463,7 +463,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                       description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 11,
                         color: AppColors.textSecondary,
                         height: 1.3,
@@ -474,7 +474,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                     const SizedBox(height: 2),
                     Text(
                       '₺$price',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -502,7 +502,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                             ),
                             child: Text(
                               'Dene',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -528,7 +528,7 @@ class _BoutiqueCatalogScreenState extends State<BoutiqueCatalogScreen> {
                             ),
                             child: Text(
                               'Satın Al',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.secondary,

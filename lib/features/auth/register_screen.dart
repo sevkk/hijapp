@@ -34,7 +34,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         SnackBar(
           content: Text(
             'Kullanım koşullarını kabul etmelisiniz',
-            style: GoogleFonts.poppins(fontSize: 13),
+            style: GoogleFonts.inter(fontSize: 13),
           ),
           backgroundColor: Colors.red.shade600,
           behavior: SnackBarBehavior.floating,
@@ -142,7 +142,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'Aramıza Katıl',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -151,7 +151,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const SizedBox(height: 4),
                     Text(
                       'Stil yolculuğuna bugün başla',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.white.withValues(alpha: 0.8),
                       ),
@@ -186,7 +186,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               Expanded(
                                 child: Text(
                                   authState.errorMessage!,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     fontSize: 13,
                                     color: Colors.red.shade700,
                                   ),
@@ -202,7 +202,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       TextFormField(
                         controller: _nameController,
                         textCapitalization: TextCapitalization.words,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                             fontSize: 15, color: AppColors.textPrimary),
                         decoration: _inputDecoration(
                           label: 'Ad Soyad',
@@ -222,7 +222,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                             fontSize: 15, color: AppColors.textPrimary),
                         decoration: _inputDecoration(
                           label: 'E-posta',
@@ -244,7 +244,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         controller: _passwordController,
                         obscureText: _obscurePassword,
                         onChanged: (_) => setState(() {}),
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                             fontSize: 15, color: AppColors.textPrimary),
                         decoration: _inputDecoration(
                           label: 'Şifre',
@@ -292,7 +292,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             const SizedBox(width: 10),
                             Text(
                               _strengthLabel(strength),
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 color: _strengthColor(strength),
@@ -332,7 +332,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             Expanded(
                               child: Text(
                                 'Kullanım koşullarını kabul ediyorum',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.inter(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,
                                   height: 1.4,
@@ -377,7 +377,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   )
                                 : Text(
                                     'Kayıt Ol',
-                                    style: GoogleFonts.poppins(
+                                    style: GoogleFonts.inter(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
@@ -397,7 +397,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               'veya',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 13,
                                 color: AppColors.textSecondary,
                               ),
@@ -419,7 +419,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           icon: const Icon(Icons.g_mobiledata, size: 28),
                           label: Text(
                             'Google ile Devam Et',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                             ),
@@ -442,7 +442,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         children: [
                           Text(
                             'Zaten hesabın var mı? ',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 14,
                               color: AppColors.textSecondary,
                             ),
@@ -452,7 +452,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                 context, '/login'),
                             child: Text(
                               'Giriş Yap',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.primary,
@@ -479,7 +479,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }) {
     return InputDecoration(
       labelText: label,
-      labelStyle: GoogleFonts.poppins(
+      labelStyle: GoogleFonts.inter(
         fontSize: 14,
         color: AppColors.textSecondary,
       ),

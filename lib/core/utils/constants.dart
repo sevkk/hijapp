@@ -1,53 +1,77 @@
 import 'package:flutter/material.dart';
 
+/// HIJAPP "Saray" palette (Spec v2, Bolum 2.1).
+///
+/// Eski isimler (primary/secondary/tertiary/background/surface/surfaceLight/
+/// textPrimary/textSecondary/divider) yeni hex degerleriyle korunuyor;
+/// boylece var olan 200+ ekran referansi otomatik olarak yeni paleti aliyor.
+/// Yeni semantik isimler (cream, gold, sage, inkBlack, ...) spec'le bire bir
+/// eslesir ve sonraki ekranlar bunlari kullanmali.
 class AppColors {
-  static const Color primary = Color(0xFFD9078F);
-  static const Color secondary = Color(0xFF6FB7BF);
-  static const Color tertiary = Color(0xFFD99873);
-  static const Color background = Color(0xFFFFF8F4);
-  static const Color surface = Color(0xFFF2BEA0);
-  static const Color surfaceLight = Color(0xFFFFF0EA);
-  static const Color textPrimary = Color(0xFF592512);
-  static const Color textSecondary = Color(0xFF8B6B5A);
-  static const Color divider = Color(0xFFE8D5CB);
+  // --- Spec tokens (kanonik) ---
+  static const Color primary = Color(0xFF4B1528);
+  static const Color primaryLight = Color(0xFF72243E);
+  static const Color cream = Color(0xFFF8F2E8);
+  static const Color creamSoft = Color(0xFFFBF6EE);
+  static const Color gold = Color(0xFFB8895E);
+  static const Color goldLight = Color(0xFFFAC775);
+  static const Color sage = Color(0xFF8FA68A);
+  static const Color inkBlack = Color(0xFF2A1F25);
+  static const Color inkMuted = Color(0xFF6B5A60);
+  static const Color border = Color(0xFFE8DDD0);
   static const Color white = Colors.white;
+  static const Color error = Color(0xFFB23A48);
+
+  // --- Geri-uyum alias'lari (eski ekranlar icin) ---
+  static const Color secondary = primaryLight;
+  static const Color tertiary = gold;
+  static const Color background = cream;
+  static const Color surface = creamSoft;
+  static const Color surfaceLight = creamSoft;
+  static const Color textPrimary = inkBlack;
+  static const Color textSecondary = inkMuted;
+  static const Color divider = border;
+  static const Color success = sage;
 }
 
 class AppStrings {
   static const String appName = 'HIJAPP';
-  static const String uploadHijab = 'Denemek istediğin başörtüsünü yükle';
-  static const String recentlyUsed = 'Son Kullandıkların';
-  static const String pickFromGallery = 'Galeriden Seç';
-  static const String takePhoto = 'Fotoğraf Çek';
-  static const String photoMode = 'Fotoğraf Modu';
+  static const String uploadHijab = 'Denemek istedigin basortusunu yukle';
+  static const String recentlyUsed = 'Son Kullandiklarin';
+  static const String pickFromGallery = 'Galeriden Sec';
+  static const String takePhoto = 'Fotograf Cek';
+  static const String photoMode = 'Fotograf Modu';
   static const String addNew = 'Yeni Ekle';
   static const String credits = 'Kredi';
-  static const String buyCredits = 'Kredi Satın Al';
+  static const String buyCredits = 'Kredi Satin Al';
   static const String enterReferralCode = 'Referans Kodu Gir';
   static const String tryOn = 'Dene';
-  static const String buyNow = 'Satın Al';
-  static const String boutiqueProducts = 'Butik Ürünleri';
+  static const String buyNow = 'Satin Al';
+  static const String boutiqueProducts = 'Butik Urunleri';
   static const String remainingCredits = 'Kalan Kredi';
-  static const String noCredits = 'Kredin kalmadı';
+  static const String noCredits = 'Kredin kalmadi';
 }
 
-// B2C Credit Packages
+// B2C consumer packages (Spec v2 Bolum 0).
 class CreditPackages {
   static const List<Map<String, dynamic>> b2c = [
-    {'credits': 10, 'price': 2.99, 'label': '10 Kredi', 'id': 'credits_10'},
-    {'credits': 25, 'price': 5.99, 'label': '25 Kredi', 'id': 'credits_25'},
-    {'credits': 50, 'price': 9.99, 'label': '50 Kredi', 'id': 'credits_50'},
+    {'credits': 10, 'price': 49.0, 'label': '10 Deneme', 'id': 'credits_10'},
+    {'credits': 25, 'price': 99.0, 'label': '25 Deneme', 'id': 'credits_25'},
+    {'credits': 50, 'price': 169.0, 'label': '50 Deneme', 'id': 'credits_50', 'popular': true},
+    {'credits': 100, 'price': 299.0, 'label': '100 Deneme', 'id': 'credits_100'},
   ];
 
+  // Butik kredi paketleri — hedef ~1 TL/kredi (Spec v2 Bolum 0).
   static const List<Map<String, dynamic>> b2b = [
-    {'credits': 100, 'price': 25.0, 'label': '100 Kredi', 'id': 'boutique_100'},
-    {'credits': 250, 'price': 100.0, 'label': '250 Kredi', 'id': 'boutique_250'},
-    {'credits': 500, 'price': 200.0, 'label': '500 Kredi', 'id': 'boutique_500'},
+    {'credits': 100, 'price': 99.0, 'label': '100 Kredi', 'id': 'boutique_100'},
+    {'credits': 500, 'price': 449.0, 'label': '500 Kredi', 'id': 'boutique_500'},
+    {'credits': 2000, 'price': 1699.0, 'label': '2000 Kredi', 'id': 'boutique_2000'},
+    {'credits': 10000, 'price': 7999.0, 'label': '10000 Kredi', 'id': 'boutique_10000'},
   ];
 }
 
 class AppLimits {
   static const int freeTrialCredits = 3;
+  static const int dailyFreeLimit = 5;
   static const int maxTemplates = 20;
 }
-

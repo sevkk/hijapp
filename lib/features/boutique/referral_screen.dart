@@ -153,7 +153,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
         ),
         title: Text(
           'Referans Kodu',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
@@ -184,7 +184,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
 
             Text(
               'Butik Referans Kodu',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
@@ -196,7 +196,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
             Text(
               'Butiğinizden aldığınız kodu girerek\nücretsiz deneme kredisi kazanın',
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 color: AppColors.textSecondary,
                 height: 1.5,
@@ -229,7 +229,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
                     const SizedBox(height: 16),
                     Text(
                       'Kod Başarıyla Kullanıldı!',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Colors.green.shade800,
@@ -239,7 +239,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
                     Text(
                       '$_successBoutiqueName size $_successCredits kredi hediye etti',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.green.shade700,
                       ),
@@ -264,7 +264,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
                         ),
                         child: Text(
                           'Ürünleri Keşfet',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -346,7 +346,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
                           )
                         : Text(
                             'Kodu Onayla',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 17,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
@@ -371,7 +371,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
                 children: [
                   Text(
                     'Nasıl Çalışır?',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -409,7 +409,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
           child: Center(
             child: Text(
               number,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
@@ -424,7 +424,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
             children: [
               Text(
                 title,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
@@ -432,7 +432,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
               ),
               Text(
                 description,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 12,
                   color: AppColors.textSecondary,
                 ),

@@ -21,7 +21,7 @@ class TemplatesScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           'Taslak Fotoğraflarım',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -70,7 +70,7 @@ class TemplatesScreen extends ConsumerWidget {
             Text(
               'Henüz taslak fotoğraf eklemedin',
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
@@ -80,7 +80,7 @@ class TemplatesScreen extends ConsumerWidget {
             Text(
               'Sık kullandığın fotoğraflarını taslak olarak kaydet, her seferinde tekrar yükleme',
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 13,
                 color: AppColors.textSecondary,
               ),
@@ -91,7 +91,7 @@ class TemplatesScreen extends ConsumerWidget {
               icon: const Icon(Icons.add, size: 20),
               label: Text(
                 'İlk Taslağını Ekle',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
@@ -165,7 +165,7 @@ class TemplatesScreen extends ConsumerWidget {
           children: [
             Text(
               '${templates.length} taslak kullanıldı',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 13,
                 color: AppColors.textSecondary,
               ),
@@ -173,7 +173,7 @@ class TemplatesScreen extends ConsumerWidget {
             const SizedBox(height: 4),
             Text(
               'Daha fazla kredi al, daha fazla dene',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 12,
                 color: AppColors.secondary,
                 fontWeight: FontWeight.w500,
@@ -191,7 +191,7 @@ class TemplatesScreen extends ConsumerWidget {
                 ),
                 child: Text(
                   'Kredi Satın Al',
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                  style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -211,7 +211,7 @@ class TemplatesScreen extends ConsumerWidget {
               icon: const Icon(Icons.photo_library_outlined, size: 18),
               label: Text(
                 'Galeriden Ekle',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -228,7 +228,7 @@ class TemplatesScreen extends ConsumerWidget {
               icon: const Icon(Icons.camera_alt_outlined, size: 18),
               label: Text(
                 'Fotoğraf Çek',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -262,7 +262,7 @@ class TemplatesScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             Text(
               'Taslak Ekle',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -281,7 +281,7 @@ class TemplatesScreen extends ConsumerWidget {
                     color: AppColors.primary),
               ),
               title: Text('Galeriden Seç',
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
+                  style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
               onTap: () {
                 Navigator.pop(ctx);
                 _addFromGallery(context, ref);
@@ -299,7 +299,7 @@ class TemplatesScreen extends ConsumerWidget {
                     color: AppColors.primary),
               ),
               title: Text('Fotoğraf Çek',
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
+                  style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
               onTap: () {
                 Navigator.pop(ctx);
                 _addFromCamera(context, ref);
@@ -336,7 +336,7 @@ class TemplatesScreen extends ConsumerWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           'Taslağa isim ver',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -346,7 +346,7 @@ class TemplatesScreen extends ConsumerWidget {
           autofocus: true,
           decoration: InputDecoration(
             hintText: 'Örn: Günlük, Düğün...',
-            hintStyle: GoogleFonts.poppins(
+            hintStyle: GoogleFonts.inter(
               fontSize: 14,
               color: AppColors.textSecondary,
             ),
@@ -361,14 +361,14 @@ class TemplatesScreen extends ConsumerWidget {
               borderSide: const BorderSide(color: AppColors.primary),
             ),
           ),
-          style: GoogleFonts.poppins(fontSize: 14),
+          style: GoogleFonts.inter(fontSize: 14),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: Text(
               'İptal',
-              style: GoogleFonts.poppins(color: AppColors.textSecondary),
+              style: GoogleFonts.inter(color: AppColors.textSecondary),
             ),
           ),
           ElevatedButton(
@@ -397,7 +397,7 @@ class TemplatesScreen extends ConsumerWidget {
             },
             child: Text(
               'Kaydet',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -426,7 +426,7 @@ class TemplatesScreen extends ConsumerWidget {
             ListTile(
               leading: const Icon(Icons.edit_outlined, color: AppColors.primary),
               title: Text('Yeniden Adlandır',
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
+                  style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
               onTap: () {
                 Navigator.pop(ctx);
                 _showRenameDialog(context, ref, template);
@@ -436,7 +436,7 @@ class TemplatesScreen extends ConsumerWidget {
               leading: Icon(Icons.delete_outline, color: Colors.red.shade400),
               title: Text(
                 'Sil',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontWeight: FontWeight.w500,
                   color: Colors.red.shade400,
                 ),
@@ -462,7 +462,7 @@ class TemplatesScreen extends ConsumerWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           'Yeniden Adlandır',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -482,14 +482,14 @@ class TemplatesScreen extends ConsumerWidget {
               borderSide: const BorderSide(color: AppColors.primary),
             ),
           ),
-          style: GoogleFonts.poppins(fontSize: 14),
+          style: GoogleFonts.inter(fontSize: 14),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: Text(
               'İptal',
-              style: GoogleFonts.poppins(color: AppColors.textSecondary),
+              style: GoogleFonts.inter(color: AppColors.textSecondary),
             ),
           ),
           ElevatedButton(
@@ -503,7 +503,7 @@ class TemplatesScreen extends ConsumerWidget {
             },
             child: Text(
               'Kaydet',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -519,21 +519,21 @@ class TemplatesScreen extends ConsumerWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           'Taslağı Sil',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
         content: Text(
           '"${template.name}" taslağını silmek istediğine emin misin?',
-          style: GoogleFonts.poppins(fontSize: 14, color: AppColors.textSecondary),
+          style: GoogleFonts.inter(fontSize: 14, color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: Text(
               'İptal',
-              style: GoogleFonts.poppins(color: AppColors.textSecondary),
+              style: GoogleFonts.inter(color: AppColors.textSecondary),
             ),
           ),
           ElevatedButton(
@@ -548,7 +548,7 @@ class TemplatesScreen extends ConsumerWidget {
             ),
             child: Text(
               'Sil',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -621,7 +621,7 @@ class _TemplateCard extends StatelessWidget {
                       template.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textPrimary,

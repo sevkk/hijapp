@@ -75,14 +75,14 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
         ),
         title: Text(
           'Görseli Sil',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
         content: Text(
           'Kaydedilen görsel galeriden silinecek. Emin misin?',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 14,
             color: AppColors.textSecondary,
           ),
@@ -92,7 +92,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(
               'İptal',
-              style: GoogleFonts.poppins(color: AppColors.textSecondary),
+              style: GoogleFonts.inter(color: AppColors.textSecondary),
             ),
           ),
           ElevatedButton(
@@ -102,7 +102,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
             ),
             child: Text(
               'Sil',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -190,7 +190,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
         appBar: AppBar(
           title: Text(
             'Sonuç',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
@@ -212,13 +212,13 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.check_circle,
-                          color: Color(0xFF4CAF50), size: 16),
+                          color: AppColors.success, size: 16),
                       const SizedBox(width: 6),
                       Text(
                         'Galeriye kaydedildi',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12,
-                          color: const Color(0xFF4CAF50),
+                          color: AppColors.success,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -321,7 +321,7 @@ class _ActionButton extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               label,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
                 color: effectiveColor,

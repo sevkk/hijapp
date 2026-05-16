@@ -21,7 +21,7 @@ class PhotoModeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           AppStrings.photoMode,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -96,7 +96,7 @@ class PhotoModeScreen extends ConsumerWidget {
           children: [
             Text(
               'Seçili Başörtüsü',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -104,7 +104,7 @@ class PhotoModeScreen extends ConsumerWidget {
             ),
             Text(
               'Desen uygulanacak',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 12,
                 color: AppColors.textSecondary,
               ),
@@ -124,7 +124,7 @@ class PhotoModeScreen extends ConsumerWidget {
         children: [
           Text(
             'Kendi fotoğrafını seç',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: AppColors.textPrimary,
@@ -272,7 +272,7 @@ class PhotoModeScreen extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: enabled
@@ -282,7 +282,7 @@ class PhotoModeScreen extends ConsumerWidget {
                   ),
                   Text(
                     subtitle,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       color: AppColors.textSecondary,
                     ),
@@ -324,7 +324,7 @@ class PhotoModeScreen extends ConsumerWidget {
         ),
         child: Text(
           'Dene!',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w700,
           ),
@@ -402,7 +402,7 @@ class PhotoModeScreen extends ConsumerWidget {
               Text(
                 'Başörtüsü deseni\nuygulanıyor...',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textPrimary,
@@ -411,7 +411,7 @@ class PhotoModeScreen extends ConsumerWidget {
               const SizedBox(height: 8),
               Text(
                 'Bu işlem birkaç saniye sürebilir',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 12,
                   color: AppColors.textSecondary,
                 ),

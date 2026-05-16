@@ -163,16 +163,16 @@ class _CreditsScreenState extends State<CreditsScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Ödeme Sistemi', style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
+        title: Text('Ödeme Sistemi', style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
         content: Text(
           'Ödeme sistemi bu cihazda kullanılamıyor (test/emülatör ortamı). '
           'Gerçek bir cihazda App Store / Play Store üzerinden satın alma yapabilirsin.',
-          style: GoogleFonts.poppins(fontSize: 14),
+          style: GoogleFonts.inter(fontSize: 14),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Tamam', style: GoogleFonts.poppins(color: AppColors.primary)),
+            child: Text('Tamam', style: GoogleFonts.inter(color: AppColors.primary)),
           ),
         ],
       ),
@@ -221,7 +221,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                         const SizedBox(height: 28),
                         Text(
                           'Kredi Paketi Seç',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
@@ -251,14 +251,14 @@ class _CreditsScreenState extends State<CreditsScreen> {
                             child: RichText(
                               text: TextSpan(
                                 text: 'Referans kodun var mı? ',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.inter(
                                   fontSize: 14,
                                   color: AppColors.textSecondary,
                                 ),
                                 children: [
                                   TextSpan(
                                     text: 'Kodu Gir',
-                                    style: GoogleFonts.poppins(
+                                    style: GoogleFonts.inter(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.primary,
@@ -273,7 +273,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                         if (_recentTransactions.isNotEmpty) ...[
                           Text(
                             'Son İşlemler',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textPrimary,
@@ -320,7 +320,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
           const SizedBox(height: 12),
           Text(
             '$_currentCredits',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 48,
               fontWeight: FontWeight.w800,
               color: Colors.white,
@@ -328,7 +328,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
           ),
           Text(
             'Mevcut Kredin',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 15,
               color: Colors.white.withOpacity(0.9),
             ),
@@ -381,7 +381,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                   child: Center(
                     child: Text(
                       '$credits',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: isSelected ? AppColors.primary : AppColors.textPrimary,
@@ -396,7 +396,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                     children: [
                       Text(
                         label,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textPrimary,
@@ -404,7 +404,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                       ),
                       Text(
                         '\$$perCredit / kredi',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
@@ -414,7 +414,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                 ),
                 Text(
                   '\$${price.toStringAsFixed(2)}',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: isSelected ? AppColors.primary : AppColors.textPrimary,
@@ -437,7 +437,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                 ),
                 child: Text(
                   'Popüler',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -492,7 +492,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                 )
               : Text(
                   'Satın Al — \$${price.toStringAsFixed(2)}',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -551,7 +551,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
           Expanded(
             child: Text(
               label,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
@@ -560,7 +560,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
           ),
           Text(
             '${isPositive ? '+' : ''}$amount',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 15,
               fontWeight: FontWeight.w700,
               color: isPositive ? Colors.green : Colors.orange,

@@ -58,7 +58,7 @@ class OnboardingScreen extends StatelessWidget {
                 // App name
                 Text(
                   'HIJAPP',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 48,
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
@@ -72,7 +72,7 @@ class OnboardingScreen extends StatelessWidget {
                 Text(
                   'Hayalindeki başörtüsünü\nsanal olarak dene',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     color: Colors.white.withValues(alpha: 0.9),
@@ -99,7 +99,7 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                     child: Text(
                       'Giriş Yap',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       ),
@@ -127,7 +127,7 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                     child: Text(
                       'Kayıt Ol',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
                       ),

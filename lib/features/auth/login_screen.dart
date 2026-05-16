@@ -76,7 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'Tekrar Hoş Geldin',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -85,7 +85,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 4),
                     Text(
                       'Hesabına giriş yap',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.white.withValues(alpha: 0.8),
                       ),
@@ -120,7 +120,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               Expanded(
                                 child: Text(
                                   authState.errorMessage!,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     fontSize: 13,
                                     color: Colors.red.shade700,
                                   ),
@@ -136,7 +136,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                             fontSize: 15, color: AppColors.textPrimary),
                         decoration: _inputDecoration(
                           label: 'E-posta',
@@ -157,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                             fontSize: 15, color: AppColors.textPrimary),
                         decoration: _inputDecoration(
                           label: 'Şifre',
@@ -189,7 +189,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                           child: Text(
                             'Şifremi Unuttum',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
                               color: AppColors.secondary,
                               fontWeight: FontWeight.w500,
@@ -232,7 +232,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   )
                                 : Text(
                                     'Giriş Yap',
-                                    style: GoogleFonts.poppins(
+                                    style: GoogleFonts.inter(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
@@ -252,7 +252,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               'veya',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 13,
                                 color: AppColors.textSecondary,
                               ),
@@ -274,7 +274,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           icon: const Icon(Icons.g_mobiledata, size: 28),
                           label: Text(
                             'Google ile Giriş Yap',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                             ),
@@ -297,7 +297,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           Text(
                             'Hesabın yok mu? ',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 14,
                               color: AppColors.textSecondary,
                             ),
@@ -307,7 +307,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 context, '/register'),
                             child: Text(
                               'Kayıt Ol',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.primary,
@@ -334,7 +334,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }) {
     return InputDecoration(
       labelText: label,
-      labelStyle: GoogleFonts.poppins(
+      labelStyle: GoogleFonts.inter(
         fontSize: 14,
         color: AppColors.textSecondary,
       ),
