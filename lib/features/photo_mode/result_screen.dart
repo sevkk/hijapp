@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,8 +7,33 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import '../../core/models/try_on_event_model.dart';
+import '../../core/services/firestore_service.dart';
 import '../../core/utils/constants.dart';
 import 'photo_mode_provider.dart';
+
+/// Result screen'e gecirilen argumanlar.
+///
+/// `imageBytes` zorunlu. Diger alanlar opsiyonel: butik/urun bilgisi
+/// boutique catalog -> photo_mode akisindan gelir, b2c kisisel akista null'dur.
+/// Geri-uyum: dogrudan `Uint8List` da kabul edilir (eski cagri sekli).
+class ResultArgs {
+  final Uint8List imageBytes;
+  final String? boutiqueId;
+  final String? productId;
+  final String? referralCodeId;
+  final TryOnUserType userType;
+  final double costUsd;
+
+  const ResultArgs({
+    required this.imageBytes,
+    this.boutiqueId,
+    this.productId,
+    this.referralCodeId,
+    this.userType = TryOnUserType.free,
+    this.costUsd = 0.01,
+  });
+}
 
 class ResultScreen extends ConsumerStatefulWidget {
   const ResultScreen({super.key});
@@ -18,17 +44,55 @@ class ResultScreen extends ConsumerStatefulWidget {
 
 class _ResultScreenState extends ConsumerState<ResultScreen> {
   late Uint8List _imageBytes;
+  ResultArgs? _args;
   String? _savedPath;
   bool _isSaved = false;
+  bool _eventLogged = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _imageBytes =
-        ModalRoute.of(context)!.settings.arguments as Uint8List;
-    // Ekran açılınca otomatik kaydet
+    final raw = ModalRoute.of(context)!.settings.arguments;
+    if (raw is ResultArgs) {
+      _args = raw;
+      _imageBytes = raw.imageBytes;
+    } else if (raw is Uint8List) {
+      _args = ResultArgs(imageBytes: raw);
+      _imageBytes = raw;
+    } else {
+      throw ArgumentError('ResultScreen: invalid arguments type');
+    }
+
+    if (!_eventLogged) {
+      _eventLogged = true;
+      _logTryOnEvent(succeeded: true);
+    }
+
     if (!_isSaved) {
       _autoSave();
+    }
+  }
+
+  /// Spec v2 Bolum 3.3 / 5.4: basarili try-on'da event log + counter increment.
+  /// boutiqueId/productId null ise event hala yazilir (counter'lar atlanir).
+  Future<void> _logTryOnEvent({required bool succeeded, String? errorMessage}) async {
+    final args = _args;
+    if (args == null) return;
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      await ref.read(firestoreServiceProvider).logTryOnEvent(
+            boutiqueId: args.boutiqueId ?? '',
+            productId: args.productId ?? '',
+            userId: uid,
+            userType: uid == null ? TryOnUserType.anonymous : args.userType,
+            referralCodeId: args.referralCodeId,
+            succeeded: succeeded,
+            costUsd: args.costUsd,
+            errorMessage: errorMessage,
+          );
+    } catch (e) {
+      // Event logging hicbir kullanici akisini bozmamali; sessizce gec.
+      debugPrint('HIJAPP: try-on event log failed: $e');
     }
   }
 

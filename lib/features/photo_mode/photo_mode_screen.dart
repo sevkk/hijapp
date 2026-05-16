@@ -1,12 +1,16 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../app/router.dart';
+import '../../core/models/try_on_event_model.dart';
 import '../../core/models/user_template.dart';
+import '../../core/services/firestore_service.dart';
 import '../../core/utils/constants.dart';
 import '../home/home_provider.dart';
 import 'photo_mode_provider.dart';
+import 'result_screen.dart';
 
 class PhotoModeScreen extends ConsumerWidget {
   const PhotoModeScreen({super.key});
@@ -354,15 +358,26 @@ class PhotoModeScreen extends ConsumerWidget {
       Navigator.pushNamed(
         context,
         AppRouter.result,
-        arguments: result,
+        arguments: ResultArgs(imageBytes: result),
       );
     } else {
-      // Hata durumu
+      // Hata durumu — basarisiz event'i logla
+      final uid = FirebaseAuth.instance.currentUser?.uid;
       final state = ref.read(photoModeNotifierProvider);
       final errorMessage = state.whenOrNull(
             error: (e, _) => e is Exception ? e.toString() : 'Bir hata oluştu',
           ) ??
           'Bir hata oluştu';
+
+      // Sessiz fire-and-forget log
+      ref.read(firestoreServiceProvider).logTryOnEvent(
+            boutiqueId: '',
+            productId: '',
+            userId: uid,
+            userType: uid == null ? TryOnUserType.anonymous : TryOnUserType.free,
+            succeeded: false,
+            errorMessage: errorMessage,
+          ).catchError((_) => '');
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
