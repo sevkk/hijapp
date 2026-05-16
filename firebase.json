@@ -1,0 +1,48 @@
+{
+    "hosting": [
+        {
+            "target": "app",
+            "public": "public",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "/privacy-policy",
+                    "destination": "/privacy-policy/index.html"
+                }
+            ],
+            "headers": [
+                {
+                    "source": "**",
+                    "headers": [
+                        {
+                            "key": "X-Content-Type-Options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "X-Frame-Options",
+                            "value": "DENY"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "target": "admin",
+            "public": "hijapp_admin/build/web",
+            "ignore": [
+                "firebase.json",
+                "**/.*"
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        }
+    ]
+}

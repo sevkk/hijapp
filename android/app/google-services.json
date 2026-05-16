@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "708141297895",
+    "project_id": "hijapp-e2645",
+    "storage_bucket": "hijapp-e2645.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708141297895:android:7248fabb6e61ef8256b242",
+        "android_client_info": {
+          "package_name": "com.example.hijapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708141297895-lkg4pedaufimg8g151q3sv44ggbqhmid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWvyAYtvAPkwGXrvKOWHO1hKuv_xGwKPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708141297895-bkf9m13sq31tv8ouoidf3ofn6oa431hg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708141297895-k0ul1vdm871l3pik56r0uchaibjpmd0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hijapp.hijapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708141297895:android:b9ccbb3a4476877d56b242",
+        "android_client_info": {
+          "package_name": "com.hijapp.hijapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708141297895-lkg4pedaufimg8g151q3sv44ggbqhmid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWvyAYtvAPkwGXrvKOWHO1hKuv_xGwKPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708141297895-bkf9m13sq31tv8ouoidf3ofn6oa431hg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708141297895-k0ul1vdm871l3pik56r0uchaibjpmd0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hijapp.hijapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

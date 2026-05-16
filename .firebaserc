@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "hijapp-e2645"
+  },
+  "targets": {
+    "hijapp-e2645": {
+      "hosting": {
+        "app": [
+          "hijapp-e2645"
+        ],
+        "admin": [
+          "hijapp-admin"
+        ]
+      }
+    }
+  }
+}
