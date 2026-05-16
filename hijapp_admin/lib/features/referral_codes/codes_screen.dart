@@ -142,7 +142,7 @@ class _CodesScreenState extends State<CodesScreen> {
                       leading: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: isActive ? AdminTheme.success.withOpacity(0.1) : AdminTheme.border,
+                          color: isActive ? AdminTheme.success.withValues(alpha: 0.1) : AdminTheme.border,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(isActive ? 'AKTİF' : 'PASİF',

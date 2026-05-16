@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +27,10 @@ class _ReferralAnalyticsScreenState extends State<ReferralAnalyticsScreen> {
 
   // Recent redemptions
   List<Map<String, dynamic>> _recentRedemptions = [];
+
+  // Spec 6.5: daily try-on line chart (last 30 days)
+  List<int> _dailyTryOns = const [];
+  int _windowDays = 30;
 
   @override
   void initState() {
@@ -101,14 +106,131 @@ class _ReferralAnalyticsScreenState extends State<ReferralAnalyticsScreen> {
       });
     }
 
+    // Load try-on events for daily chart (last N days)
+    final cutoff = DateTime.now().subtract(Duration(days: _windowDays));
+    final eventsQuery = await _fs
+        .collection('try_on_events')
+        .where('boutiqueId', isEqualTo: _boutiqueId)
+        .where('timestamp', isGreaterThanOrEqualTo: Timestamp.fromDate(cutoff))
+        .orderBy('timestamp')
+        .get();
+
+    final buckets = List<int>.filled(_windowDays, 0);
+    final startDay = DateTime(cutoff.year, cutoff.month, cutoff.day);
+    for (final doc in eventsQuery.docs) {
+      final ts = (doc.data()['timestamp'] as Timestamp?)?.toDate();
+      if (ts == null) continue;
+      final day = DateTime(ts.year, ts.month, ts.day);
+      final idx = day.difference(startDay).inDays;
+      if (idx >= 0 && idx < _windowDays) buckets[idx]++;
+    }
+
     setState(() {
       _codes = codes;
       _recentRedemptions = redemptions;
       _totalRedemptions = txQuery.docs.length;
       _totalCreditsDistributed = totalCredits;
       _uniqueUsers = uniqueUserIds.length;
+      _dailyTryOns = buckets;
       _loading = false;
     });
+  }
+
+  Widget _tryOnLineChart() {
+    if (_dailyTryOns.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final spots = <FlSpot>[];
+    for (var i = 0; i < _dailyTryOns.length; i++) {
+      spots.add(FlSpot(i.toDouble(), _dailyTryOns[i].toDouble()));
+    }
+    final maxY = (_dailyTryOns.reduce((a, b) => a > b ? a : b)).toDouble();
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Son $_windowDays Gün — Günlük Try-On',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: AdminTheme.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'try_on_events koleksiyonundan gerçek zamanlı.',
+              style: GoogleFonts.inter(fontSize: 12, color: AdminTheme.textSecondary),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 220,
+              child: LineChart(
+                LineChartData(
+                  minY: 0,
+                  maxY: (maxY < 5 ? 5 : maxY * 1.15),
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    getDrawingHorizontalLine: (v) => FlLine(
+                      color: AdminTheme.border,
+                      strokeWidth: 0.5,
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 28,
+                        getTitlesWidget: (v, _) => Text(
+                          v.toInt().toString(),
+                          style: GoogleFonts.inter(fontSize: 10, color: AdminTheme.textSecondary),
+                        ),
+                      ),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 22,
+                        interval: (_windowDays / 6).floorToDouble().clamp(1, double.infinity),
+                        getTitlesWidget: (v, _) {
+                          final day = DateTime.now().subtract(Duration(days: _windowDays - v.toInt() - 1));
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              DateFormat('d/M').format(day),
+                              style: GoogleFonts.inter(fontSize: 10, color: AdminTheme.textSecondary),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: spots,
+                      isCurved: true,
+                      barWidth: 2.5,
+                      color: AdminTheme.primary,
+                      dotData: const FlDotData(show: false),
+                      belowBarData: BarAreaData(
+                        show: true,
+                        color: AdminTheme.gold.withValues(alpha: 0.18),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -158,6 +280,11 @@ class _ReferralAnalyticsScreenState extends State<ReferralAnalyticsScreen> {
 
             const SizedBox(height: 32),
 
+            // Daily try-on chart (Spec 6.5)
+            _tryOnLineChart(),
+
+            const SizedBox(height: 32),
+
             // Per-code breakdown
             Text('Kod Bazlı İstatistikler',
                 style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600, color: AdminTheme.textPrimary)),
@@ -176,7 +303,7 @@ class _ReferralAnalyticsScreenState extends State<ReferralAnalyticsScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
-                    headingRowColor: WidgetStateProperty.all(AdminTheme.border.withOpacity(0.3)),
+                    headingRowColor: WidgetStateProperty.all(AdminTheme.border.withValues(alpha: 0.3)),
                     columns: [
                       DataColumn(label: Text('Kod', style: GoogleFonts.inter(fontWeight: FontWeight.w600))),
                       DataColumn(label: Text('Durum', style: GoogleFonts.inter(fontWeight: FontWeight.w600))),
@@ -259,7 +386,7 @@ class _ReferralAnalyticsScreenState extends State<ReferralAnalyticsScreen> {
 
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: AdminTheme.primary.withOpacity(0.1),
+                        backgroundColor: AdminTheme.primary.withValues(alpha: 0.1),
                         child: const Icon(Icons.person_outline, size: 20, color: AdminTheme.primary),
                       ),
                       title: Text(userEmail, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w500)),
@@ -326,7 +453,7 @@ class _StatCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, size: 20, color: color),

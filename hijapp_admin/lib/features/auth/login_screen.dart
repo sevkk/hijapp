@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 40)],
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.15), blurRadius: 40)],
           ),
           child: Form(
             key: _formKey,
@@ -57,14 +57,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [AdminTheme.primary, AdminTheme.secondary]),
-                    borderRadius: BorderRadius.circular(16),
+                    color: AdminTheme.primary,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AdminTheme.gold, width: 1.2),
                   ),
-                  child: const Icon(Icons.auto_awesome, color: Colors.white, size: 28),
+                  child: const Icon(Icons.auto_awesome, color: AdminTheme.gold, size: 26),
                 ),
                 const SizedBox(height: 24),
-                Text('HIJAPP Admin', style: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w800, color: AdminTheme.textPrimary)),
-                Text('Butik yönetim paneli', style: GoogleFonts.inter(fontSize: 14, color: AdminTheme.textSecondary)),
+                Text(
+                  'HIJAPP Butik Paneli',
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: AdminTheme.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Butiğinizi yönetin, ürünleri yayınlayın, denemeleri izleyin.',
+                  style: GoogleFonts.inter(fontSize: 13, color: AdminTheme.textSecondary),
+                ),
                 const SizedBox(height: 32),
 
                 TextFormField(
@@ -87,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: AdminTheme.error.withOpacity(0.1),
+                      color: AdminTheme.error.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(_error!, style: GoogleFonts.inter(color: AdminTheme.error, fontSize: 13)),
@@ -100,9 +112,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: _loading ? null : _submit,
                     child: _loading
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: AdminTheme.cream, strokeWidth: 2))
                         : Text('Giriş Yap', style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w600)),
                   ),
+                ),
+                const SizedBox(height: 20),
+                Divider(color: AdminTheme.border, height: 1),
+                const SizedBox(height: 16),
+                Text(
+                  'Butik ortağı olmak için: iletisim@hijapp.com',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(fontSize: 12, color: AdminTheme.textSecondary),
                 ),
               ],
             ),

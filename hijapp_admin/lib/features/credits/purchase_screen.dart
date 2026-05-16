@@ -32,9 +32,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AdminTheme.primary.withOpacity(0.07),
+              color: AdminTheme.primary.withValues(alpha: 0.07),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AdminTheme.primary.withOpacity(0.2)),
+              border: Border.all(color: AdminTheme.primary.withValues(alpha: 0.2)),
             ),
             child: Row(
               children: [
@@ -67,7 +67,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         width: 220,
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: isSelected ? AdminTheme.primary.withOpacity(0.05) : Colors.white,
+                          color: isSelected ? AdminTheme.primary.withValues(alpha: 0.05) : Colors.white,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: isSelected ? AdminTheme.primary : AdminTheme.border,

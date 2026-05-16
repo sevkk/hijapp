@@ -21,6 +21,7 @@ dependencies:
   google_fonts: ^6.2.1
   cached_network_image: ^3.4.1
   image_picker_web: ^4.0.0
+  fl_chart: ^1.0.0
 
   # Utils
   flutter_riverpod: ^2.6.1

@@ -85,6 +85,7 @@ class _Sidebar extends StatelessWidget {
           _NavItem(icon: Icons.qr_code_outlined, label: 'Referans Kodlar', route: '/codes', current: location),
           _NavItem(icon: Icons.analytics_outlined, label: 'Analitikler', route: '/analytics', current: location),
           _NavItem(icon: Icons.toll_outlined, label: 'Kredi Satın Al', route: '/credits', current: location),
+          _NavItem(icon: Icons.settings_outlined, label: 'Ayarlar', route: '/settings', current: location),
 
           const Spacer(),
           const Divider(color: Colors.white12, height: 1),
@@ -128,21 +129,21 @@ class _NavItem extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
-        color: isActive ? AdminTheme.primary.withOpacity(0.15) : Colors.transparent,
+        color: isActive ? AdminTheme.gold.withValues(alpha: 0.18) : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
         leading: Icon(
           icon,
           size: 20,
-          color: isActive ? AdminTheme.primary : Colors.white54,
+          color: isActive ? AdminTheme.gold : AdminTheme.cream.withValues(alpha: 0.6),
         ),
         title: Text(
           label,
           style: GoogleFonts.inter(
             fontSize: 14,
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-            color: isActive ? Colors.white : Colors.white70,
+            color: isActive ? AdminTheme.cream : AdminTheme.cream.withValues(alpha: 0.78),
           ),
         ),
         onTap: () => context.go(route),

@@ -150,7 +150,7 @@ class _StatCard extends StatelessWidget {
           Container(
             width: 44,
             height: 44,
-            decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
             child: Icon(icon, color: color, size: 22),
           ),
           const SizedBox(height: 16),
@@ -178,7 +178,7 @@ class _TxRow extends StatelessWidget {
 
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: (isPositive ? AdminTheme.success : AdminTheme.error).withOpacity(0.1),
+        backgroundColor: (isPositive ? AdminTheme.success : AdminTheme.error).withValues(alpha: 0.1),
         child: Icon(isPositive ? Icons.add : Icons.remove,
             color: isPositive ? AdminTheme.success : AdminTheme.error, size: 18),
       ),

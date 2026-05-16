@@ -7,6 +7,7 @@ import '../features/products/products_screen.dart';
 import '../features/referral_codes/codes_screen.dart';
 import '../features/credits/purchase_screen.dart';
 import '../features/referral_codes/referral_analytics_screen.dart';
+import '../features/settings/settings_screen.dart';
 import '../widgets/admin_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -50,6 +51,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/credits',
           builder: (context, state) => const PurchaseScreen(),
+        ),
+        GoRoute(
+          path: '/settings',
+          builder: (context, state) => const SettingsScreen(),
         ),
       ],
     ),
