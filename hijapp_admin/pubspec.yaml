@@ -16,6 +16,8 @@ dependencies:
   firebase_auth: ^5.5.1
   cloud_firestore: ^5.6.5
   firebase_storage: ^12.4.4
+  cloud_functions: ^5.2.4
+  url_launcher: ^6.3.1
 
   # UI
   google_fonts: ^6.2.1

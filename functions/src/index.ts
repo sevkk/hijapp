@@ -22,6 +22,9 @@ import { logger } from 'firebase-functions/v2';
 initializeApp();
 const db = getFirestore();
 
+// Spec v2 Adim 8 — iyzico checkout entegrasyonu
+export { createIyzicoCheckout, iyzicoCallback } from './iyzico.js';
+
 /**
  * Spec 3.3 / 7: Yeni try_on_event uretildiginde butik & urun counter'larini
  * gunceller. Mobile zaten basarili event'lerde sayaclari arttiriyor; bu function
